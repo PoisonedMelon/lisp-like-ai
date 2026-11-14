@@ -1,0 +1,15 @@
+; Count words in a file (or stdin):  ./slip examples/wordcount.slip [file]
+(def text (if args (read (first args)) (read stdin)))
+
+(def tally [counts word]
+  (put counts word (+ 1 (get counts word 0))))
+
+(def counts (reduce tally (split text) {}))
+
+(def report [ws]
+  (if ws
+    (do (print (first ws) (get counts (first ws)))
+        (report (rest ws)))))
+
+(report (keys counts))
+(print "total:" (len (split text)) "unique:" (len counts))
