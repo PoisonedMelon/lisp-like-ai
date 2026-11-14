@@ -1,0 +1,6 @@
+15 <fn add5> <fn make-adder> <builtin print>
+10
+[3, 2, 1]
+true true
+2432902008176640000
+["1", "2", "3"] xyz

@@ -1,0 +1,40 @@
+; write a file through a handle
+(def f (open "notes.txt" "w"))
+(print f)
+(print (write f "first line\n" "second " 2 "\n"))
+(write f "third\n")
+(close f)
+(print f)
+; read a whole file by path
+(print (repr (read "notes.txt")))
+; read, readline, seek, tell on one handle
+(def f (open "notes.txt" "r+"))
+(print (repr (readline f)) (tell f))
+(print (repr (read f 6)) (tell f))
+(print (seek f 0) (repr (read f 5)))
+(print (seek f -6 "end") (repr (read f)))
+(print (repr (read f)) (repr (readline f)))
+(print (seek f 2 "start") (seek f 3 "current") (repr (read f 4)))
+(seek f 0)
+(write f "FIRST")
+(seek f 0)
+(print (lines f))
+(close f)
+; append mode
+(def f (open "notes.txt" "a"))
+(write f "appended\n")
+(close f)
+(print (lines "notes.txt"))
+; read line by line until EOF
+(def show-lines [f n]
+  (let [line (readline f)]
+    (if line
+      (do (write stdout n ": " line) (show-lines f (+ n 1)))
+      (close f))))
+(show-lines (open "notes.txt") 1)
+; write by path replaces the file; any value can be written
+(print (write "data.txt" {"k" [1 2]} " " 3))
+(print (read "data.txt"))
+(print (open "does/not/exist.txt"))
+(write stdout "stdout without newline")
+(write stdout "\n")

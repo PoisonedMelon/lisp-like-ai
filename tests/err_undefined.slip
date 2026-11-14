@@ -1,0 +1,3 @@
+(print "before")
+(print undefined-name)
+(print "not reached")

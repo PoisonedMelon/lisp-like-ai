@@ -1,0 +1,14 @@
+(def make-adder [n] (fn [x] (+ x n)))
+(def add5 (make-adder 5))
+(print (add5 10) add5 make-adder print)
+(def compose [f g] (fn [x] (f (g x))))
+(print ((compose add5 add5) 0))
+; closures created in a tail-recursive loop keep their own bindings
+(def make-all [i acc] (if (= i 0) acc (make-all (- i 1) (push acc (fn [] i)))))
+(print (map (fn [f] (f)) (make-all 3 [])))
+(def even? [n] (if (= n 0) true (odd? (- n 1))))
+(def odd? [n] (if (= n 0) false (even? (- n 1))))
+(print (even? 100000) (odd? 7))
+(let [fact (fn [n] (if (< n 2) 1 (* n (fact (- n 1)))))]
+  (print (fact 20)))
+(print (map str [1 2 3]) (reduce (fn [a b] (+ a b)) ["x" "y" "z"]))

@@ -1,0 +1,4 @@
+(print (repr (readline stdin)))
+(print (repr (read stdin 3)))
+(print (lines stdin))
+(print (repr (read stdin)) (repr (readline stdin)))
