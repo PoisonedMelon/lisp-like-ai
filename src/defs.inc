@@ -96,6 +96,12 @@
 %define O_TRUNC    0x200
 %define O_APPEND   0x400
 
+; die with "stack overflow" when the native stack is nearly exhausted
+%macro STACK_CHECK 0
+        cmp     rsp, [rel stack_limit]
+        jb      stack_overflow
+%endmacro
+
 ; reg := tagged(reg)
 %macro TAGINT 1
         lea     %1, [%1*2+1]

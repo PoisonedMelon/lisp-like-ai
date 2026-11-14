@@ -62,6 +62,9 @@ init_memory:
 ; alloc(rdi = bytes) -> rax = zeroed, 8-byte aligned memory.
 ; Clobbers only rax and rdi.
 alloc:
+        mov     rax, rdi
+        shr     rax, 40                 ; absurd sizes would wrap the pointer
+        jnz     .oom
         mov     rax, [rel heap_ptr]
         lea     rdi, [rax+rdi+7]
         and     rdi, -8
@@ -322,6 +325,9 @@ bdie_val:
         call    sb_value
         jmp     die_flush
 
+stack_overflow:
+        DIE     "stack overflow (recursion too deep)"
+
 bad_arity:
         BDIE    "wrong number of arguments"
 
@@ -469,6 +475,9 @@ str_eq_cstr:
 
 ; make_list(rdi = n) -> rax = list with n nil items. Clobbers rax, rdi.
 make_list:
+        mov     rax, rdi
+        shr     rax, 37                 ; n*8 must not overflow
+        jnz     alloc.oom
         push    rdi
         lea     rdi, [rdi*8+LIST_HDR]
         call    alloc

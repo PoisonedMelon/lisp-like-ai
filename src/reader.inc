@@ -87,6 +87,7 @@ skip_ws:
 ; read_form() -> rax = value, edx = status (0 value, 1 end of input,
 ; 2 closing bracket with the bracket char in ecx)
 read_form:
+        STACK_CHECK
         push    rbx
         push    r12
         push    r13

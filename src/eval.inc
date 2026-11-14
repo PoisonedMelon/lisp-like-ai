@@ -25,8 +25,7 @@ eval:
         push    r14
         push    r15
         sub     rsp, 8
-        cmp     rsp, [rel stack_limit]
-        jb      .overflow
+        STACK_CHECK
         mov     qword [rsp], 0          ; frame owned by this invocation
         mov     rbx, rdi
         mov     r12, rsi
@@ -55,9 +54,6 @@ eval:
         jmp     .ret
 .false: lea     rax, [rel false_obj]
         jmp     .ret
-
-.overflow:
-        DIE     "stack overflow (recursion too deep)"
 
 ; ---- variable lookup: local frames first, then the symbol's global slot
 .sym:   mov     rcx, r12

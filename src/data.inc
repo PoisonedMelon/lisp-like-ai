@@ -37,7 +37,8 @@ equal:
         repe cmpsb
         jne     .no
         jmp     .yes
-.list:  mov     rcx, [rdi+LIST_LEN]
+.list:  STACK_CHECK
+        mov     rcx, [rdi+LIST_LEN]
         cmp     rcx, [rsi+LIST_LEN]
         jne     .no
         push    rbx
@@ -65,7 +66,8 @@ equal:
         pop     r12
         pop     rbx
         ret
-.hash:  mov     rcx, [rdi+HASH_COUNT]
+.hash:  STACK_CHECK
+        mov     rcx, [rdi+HASH_COUNT]
         cmp     rcx, [rsi+HASH_COUNT]
         jne     .no
         push    rbx
@@ -399,6 +401,7 @@ hash_del:
 ; for their elements).
 ; ---------------------------------------------------------------------------
 sb_value:
+        STACK_CHECK
         push    rbx
         push    r12
         push    r13
